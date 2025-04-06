@@ -1,0 +1,50 @@
+package jdbcconnectivity;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class data {
+	public static void main(String[] args) {
+		Connection connection= null;
+		
+		Statement statement= null;
+		
+		try {
+			
+			//loading driver.
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+			System.out.println("Connection created successfully");
+			
+			
+			//creating queries.
+			String q1 = "insert into dairy values(234, 'adinath chavan' ,67372)";
+			String q2 = "insert into dairy values(35, 'dhiraj chavan' , 87743)";
+			String q3 = "insert into dairy values(484, 'tejas chavan' , 98747)";
+			
+			//executing queries.
+		    statement = connection.createStatement();
+		    statement.executeUpdate(q1);
+		    statement.executeUpdate(q2);
+		    statement.executeUpdate(q3);
+		
+		    System.out.println("Values are inserted successfully....");
+			
+		}catch(ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(statement!=null) statement.close();
+				if(connection!=null) connection.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Connection closed successfully ....");
+		}
+	}
+
+}
