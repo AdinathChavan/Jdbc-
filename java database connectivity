@@ -1,0 +1,39 @@
+package jdbcconnectivity;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class test {
+	public static void main(String[] args) throws ClassNotFoundException , SQLException {
+		// load the driver.
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		System.out.println("driver loaded successfully...!");
+		
+		//create the connection.
+		Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+		
+		//write the query.
+		String q1 = "create table dairy(did number primary key, dname varchar2(30), dsal number)";
+		
+		//process the query.
+		Statement state = connection.createStatement();
+		int x = state.executeUpdate(q1);
+		System.out.println("table created successfully...."+x);
+		
+		
+		String a = "insert into dairy values(124,adinath chavan, 123000)";
+		ResultSet y = state.executeQuery(a);
+		
+		System.out.println(y);
+		
+		//release the resources
+		state.close();
+		connection.close();
+		System.out.println("Connection closed successfully......");
+		
+		
+	}
+
+}
