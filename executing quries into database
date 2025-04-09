@@ -1,0 +1,40 @@
+package jdbcconnectivity;
+import java.lang.Exception;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class employee{ 
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+		
+		while(true) {
+			System.out.println("Enter Did :");
+			Scanner sc = new Scanner(System.in);
+			int a = sc.nextInt();
+			
+			System.out.println("Enter name of Dname :");
+			String name = sc.next();
+			
+			System.out.println("enter your salary");
+			double salary = sc.nextDouble();
+			
+			String q1 = "insert into dairy values(" +a +" "+name+" "+salary;
+			
+			System.out.println(q1);
+			
+			System.out.println("Do you want to push more records : ");
+			String result = sc.next();
+			
+			if(result=="no")
+				break;
+				
+			
+		}
+		
+		
+	}
+
+}
