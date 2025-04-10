@@ -1,0 +1,45 @@
+package jdbcconnectivity;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class bank {
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+		Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+		
+		PreparedStatement prepareStatement = connect.prepareStatement("insert into dairy values(?,?,?)");
+		
+		Scanner sc = new Scanner(System.in);
+		Scanner st = new Scanner(System.in);
+		while(true) {
+			System.out.println("Enter id :");
+			int did= sc.nextInt();
+			
+			System.out.println("Enter name :");
+			String dname = st.nextLine();
+			System.out.println("Enter salary :");
+			double dsal = sc.nextDouble();
+			
+			System.out.println("you want one more record to add ");
+			String response = sc.next();
+			if(response.equalsIgnoreCase("no")) {
+				break;
+			}
+			
+			prepareStatement.setInt(1, did);
+			prepareStatement.setString(2, dname);
+			prepareStatement.setDouble(3, dsal);
+			prepareStatement.executeUpdate();
+			
+		}
+		sc.close();
+		st.close();
+		prepareStatement.close();
+		connect.close();
+		System.out.println("connection closed successfully");
+	}
+
+}
