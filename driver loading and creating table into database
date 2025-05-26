@@ -1,0 +1,34 @@
+package jdbcconnectivity;
+
+import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+
+
+
+public class driverloading{
+public static void main(String[] args) throws  SQLException, ClassNotFoundException{
+	Class.forName("oracle.jdbc.driver.OracleDriver");
+	
+	Connection conn = java.sql.DriverManager.getConnection("jdbc:Oracle:thin:@localhost:1521:xe","system","java");
+	
+	System.out.println("Driver loaded successfully");
+	
+    String q1 = "create table Bank(accountno number primary key, name varchar2(50), balance number)";
+    
+    Statement query = conn.createStatement();
+    int x = query.executeUpdate(q1);
+    
+    System.out.println("table created successfully "+x);
+    
+    conn.close();
+    query.close();
+    
+}
+	
+
+}
