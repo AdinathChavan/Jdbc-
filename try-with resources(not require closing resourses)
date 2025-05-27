@@ -1,0 +1,49 @@
+package jdbcconnectivity;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+
+public class trywithresources {
+
+	public static void main(String[] args) {
+		// ----------try with resources does not require closing connection because it extends the autoclosable inteface which contain close method inside that .
+		
+		 
+		 try(Connection conn =DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+				  Statement statement = conn.createStatement()){
+			 
+			/*  -----------This we create the table and execute query;
+			 *  statement.executeUpdate("create table student (id number primary key, name varchar2(30), marks number)");
+			 statement.executeUpdate("insert into student values(12,'Adinath Chavan',76)");
+			 statement.executeUpdate("insert into student values(23,'Kiran Borate', 77)");
+			 statement.executeUpdate("insert into student values(34,'Ajay Ghorpade', 78)");
+			 statement.executeUpdate("insert into student values(45,'Tejas More', 79)");
+			 
+			 ResultSet info = statement.executeQuery("select *from student");
+			 
+			 while(info.next()) {
+				 System.out.println(" "+info.getInt("id")+" "+info.getString("name")+" "+info.getInt("marks"));
+			 }
+			 */
+			 
+			 //---- Updating query and getting data ;
+			 System.out.println("After the updating information ");
+			 
+			 statement.executeUpdate("update  student set marks = marks+10 where marks<=77");
+			 
+			 ResultSet set = statement.executeQuery("select *from student");
+			 while(set.next()) {
+				 System.out.println(" "+set.getInt("id")+" "+set.getString("name")+" "+set.getInt("marks"));
+			 } 
+		 }catch(SQLException e) {
+			 e.printStackTrace();
+		 }
+		 
+		 
+	}
+
+}
