@@ -1,0 +1,47 @@
+package jdbcconnectivity;
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class preparedStatement{
+	
+	public static void main(String[] args)  throws ClassNotFoundException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		try(Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java")
+				){
+			
+			PreparedStatement statement = connect.prepareStatement("insert into student values(?, ?, ?)");
+			Scanner sc = new Scanner(System.in);
+			
+			while(true) {
+				System.out.println("enter student id ... ");
+				int id = sc.nextInt();
+				sc.nextLine();
+				System.out.println("Enter student name ...");
+				String name = sc.nextLine();
+				System.out.println("Enter student marks ...");
+				int marks = sc.nextInt();
+				
+				statement.setInt(1, id);
+				statement.setString(2, name);
+			    statement.setInt(3, marks);
+			    statement.executeUpdate();
+				
+				System.out.println("Data inserted successfully... Do you want add one more record ...");
+				String response = sc.next();
+				
+				if(response.equalsIgnoreCase("no")) {
+					break;
+				}
+			}
+			
+		}catch(SQLException c) {
+			c.printStackTrace();
+		}
+				
+	}
+
+}
