@@ -1,0 +1,71 @@
+package jdbcconnectivity;
+
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.sql.Connection;
+
+public class employeedata {
+
+	public static void main(String[] args) throws ClassNotFoundException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		
+		try(Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+				Statement statement = connect.createStatement()){
+			
+			//String q1 = " create table emp(eid number primary key, ename varchar2(50), esal number)";
+			 
+			//statement.executeUpdate(q1);
+			Scanner sc = new Scanner(System.in);
+			PreparedStatement prepare = connect.prepareStatement("insert into emp values (?,?,?)");
+			
+			while(true) {
+				System.out.println("enter employee id - ");
+				int eid = sc.nextInt();
+				sc.nextLine();
+				System.out.println("enter employee name - ");
+				String ename = sc.nextLine();
+				System.out.println("enter employee salary - ");
+				double esal = sc.nextDouble();
+				
+				prepare.setInt(1, eid);
+				prepare.setString(2, ename);
+				prepare.setDouble(3, esal);
+				
+				prepare.executeUpdate();
+				
+				System.out.println("Do you want one more record : yes / no ");
+				String response = sc.next();
+				if(response.equalsIgnoreCase("no")) {
+					break;
+				}
+				
+			}
+			
+			String q2 = "update emp set esal = esal+2000 where esal<10000";
+			String q3 = "select eid, ename from emp where esal>4000";
+			
+			boolean b = statement.execute(q3);
+			
+			if(b) {
+				ResultSet set = statement.getResultSet();
+				
+				while(set.next()) {
+					System.out.println(set.getInt(1)+" "+set.getString(2));
+				}
+			}else {
+				int x = statement.getUpdateCount();
+				System.out.println("updated records...."+x);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+}
