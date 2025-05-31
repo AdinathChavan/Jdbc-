@@ -1,0 +1,48 @@
+package jdbcconnectivity;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.sql.DriverManager;
+
+
+public class transactionManagement {
+	
+	public static void main(String[] args) throws SQLException , ClassNotFoundException{
+	  Connection connect = null;
+	  Statement statement=null;
+	  Savepoint savepoint1 = null;
+	  Savepoint savepoint2 = null;
+
+	  try {
+		  Class.forName("oracle.jdbc.driver.OracleDriver");
+		  connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+		  System.out.println("Connection created successfully.....");
+		  statement  = connect.createStatement();
+		  connect.setAutoCommit(false);
+		  
+		  statement.executeUpdate("insert into emp values(12,'adinath chavan',7000)");
+		  statement.executeUpdate("insert into emp values(13,'yash chavan',5000)");
+		  statement.executeUpdate("insert into emp values(14,'shubham chavan',6000)");
+		  statement.executeUpdate("insert into emp values(15,'dhiraj chavan', 8000)");
+		  statement.executeUpdate("update emp set esal=esal+1000 where esal <6000");		  
+		  connect.commit();
+		  System.out.println("transaction successfull.........");
+		  
+		  
+		  
+	  }catch(SQLException  e) {
+		  e.getMessage();
+	  }catch(NullPointerException n) {
+		  n.getMessage();
+	  }
+	  
+	  finally {
+		  connect.close();
+		  statement.close();
+		  System.out.println("resources are released successfully...........");
+	  }
+	  
+	}
+
+}
