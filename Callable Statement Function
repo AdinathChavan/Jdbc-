@@ -1,0 +1,30 @@
+package jdbcconnectivity;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Types;
+
+public class CallableStatementFunction {
+
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+		
+		CallableStatement callable = connect.prepareCall("{?=call getAvg(?,?)}");
+		callable.setInt(2,111);
+		callable.setInt(3,222);
+		
+		callable.registerOutParameter(1, Types.DOUBLE);
+		
+		
+		callable.execute();
+		
+		System.out.println("Average salary ....."+callable.getDouble(1));
+		
+		connect.close();
+		callable.close();
+	}
+
+}
