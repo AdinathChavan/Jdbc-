@@ -1,0 +1,27 @@
+package com.tcs;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+public class connectionStart {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","java");
+		
+		Statement statement = connect.createStatement();
+		
+		statement.executeUpdate("insert into pointstable values('csk',12)");
+		statement.executeUpdate("insert into pointstable values('mi',10)");
+		statement.executeUpdate("insert into pointstable values('pbks',8)");
+		
+		ResultSet result = statement.executeQuery("select *from pointstable");
+		result.next();		
+		while(result.next()) {
+			System.out.println(result.getString(1)+" "+result.getInt(2)+"");
+		}
+		
+	}
+
+}
